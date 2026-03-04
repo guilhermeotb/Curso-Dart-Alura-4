@@ -3,7 +3,13 @@ import 'package:http/http.dart';
 import 'dart:convert';
 
 void main(){
-resquestDataAsync();
+//requestData();
+sendDataAsync({
+  "id": "NEW001",
+  "name":"Flutter",
+  "lastname":"Dart",
+  "balance": 5000,
+});
 }
 
 resquestData(){
@@ -25,15 +31,23 @@ print(mapCarla["balance"]);
 
 }
 
-resquestDataAsync() async {
+Future<List<dynamic>> resquestDataAsync() async {
 
   String url =
    "https://gist.githubusercontent.com/guilhermeotb/b5e5988083befbf76bfc7e34c6f518d1/raw/8eb9c4615a551aa5f6eb119cec1a93c781759f5e/accounts.json";
   Response response = await get(Uri.parse(url));
+  
+  return json.decode(response.body);
 
-  print(json.decode(response.body)[0]);
-  print("De fata, a ultima coisa a acontecer na função");
+}
 
+
+sendDataAsync(Map<String, dynamic> mapAccount) async{
+  List<dynamic> listAccounts = await resquestDataAsync();
+  listAccounts.add(mapAccount);
+  String content = json.encode(listAccounts);
+  print(content);
+  print(json.encode(listAccounts.last));
 }
 
   
